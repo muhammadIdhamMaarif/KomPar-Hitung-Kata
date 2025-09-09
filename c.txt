@@ -1,0 +1,33 @@
+We take inspiration from NLP, where the next token prediction task is used for foundation model pre-training and
+to solve diverse downstream tasks via prompt engineering [10]. To build a foundation model for segmentation,
+we aim to define a task with analogous capabilities.
+Task. We start by translating the idea of a prompt from NLP
+to segmentation, where a prompt can be a set of foreground
+/ background points, a rough box or mask, free-form text,
+or, in general, any information indicating what to segment
+in an image. The promptable segmentation task, then, is to
+return a valid segmentation mask given any prompt. The requirement of a “valid” mask simply means that even when
+a prompt is ambiguous and could refer to multiple objects
+(e.g., recall the shirt vs. person example, and see Fig. 3),
+the output should be a reasonable mask for at least one of
+those objects. This requirement is similar to expecting a language model to output a coherent response to an ambiguous
+prompt. We choose this task because it leads to a natural
+pre-training algorithm and a general method for zero-shot
+transfer to downstream segmentation tasks via prompting.
+Pre-training. The promptable segmentation task suggests a
+natural pre-training algorithm that simulates a sequence of
+prompts (e.g., points, boxes, masks) for each training sample and compares the model’s mask predictions against the
+ground truth. We adapt this method from interactive segmentation [109, 70], although unlike interactive segmentation whose aim is to eventually predict a valid mask after
+enough user input, our aim is to always predict a valid mask
+for any prompt even when the prompt is ambiguous. This
+ensures that a pre-trained model is effective in use cases that
+involve ambiguity, including automatic annotation as required by our data engine §4. We note that performing well
+at this task is challenging and requires specialized modeling
+and training loss choices, which we discuss in §3.
+Zero-shot transfer. Intuitively, our pre-training task endows the model with the ability to respond appropriately to
+any prompt at inference time, and thus downstream tasks
+can be solved by engineering appropriate prompts. For example, if one has a bounding box detector for cats, cat instance segmentation can be solved by providing the detector’s box output as a prompt to our model. In general, a wide
+array of practical segmentation tasks can be cast as prompting. In addition to automatic dataset labeling, we explore
+five diverse example tasks in our experiments in §7.
+Related tasks. Segmentation is a broad field: there’s interactive segmentation [57, 109], edge detection [3], super pixelization [85], object proposal generation [2], foreground segmentation [94], semantic segmentation [90], instance segmentation [66], panoptic segmentation [59], etc.
+The goal of our promptable segmentation task is to produce
