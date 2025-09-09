@@ -23,10 +23,10 @@ def HitungKataDalamFile(files):
             jumlahKata[w] = jumlahKata.get(w, 0) + c
 
 if __name__ == "__main__":
-    # Example: three text files
+    # contoh file
     files = ["a.txt", "b.txt", "c.txt"]
 
-    # Split work: 2 threads
+    # bagi kerja ke 2 thread
     mid = len(files)//2
     t1 = threading.Thread(target=HitungKataDalamFile, args=(files[:mid],))
     t2 = threading.Thread(target=HitungKataDalamFile, args=(files[mid:],))
